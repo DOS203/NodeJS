@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
   <div class="container">
-    <a class="navbar-brand" href="/">VidJot</a>
+    <a class="navbar-brand" href="/">EasyGO</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
       aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -13,6 +13,14 @@
         <li class="nav-item">
           <a class="nav-link" href="/about">About</a>
         </li>
+        <li class="nav-item">
+            <form class="form-line">
+              <input class="form-control mr-sm-2" type="search" placeholder="Products" aria-label="Search">
+
+            </form>
+            <a href="/users/search" class="nav-link">Search Product</a>
+          </li>
+      
       </ul>
       <ul class="navbar-nav ml-auto">
         {{#if user}}
@@ -20,18 +28,32 @@
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink">Account</a>
             <div class="dropdown-menu">
               <a href="/users/edit" class="dropdown-item">Edit Profile</a>
+              <a href="/users/payment" class="dropdown-item">Payment</a>
             </div>
+          </li>
+            <li class="nav-item">
+            <a href="/users/privilege" class="nav-link">Privilege Management</a>
           </li>
           <li class="nav-item">
             <a href="/users/logout" class="nav-link">Logout</a>
           </li>
+            <li class="nav-item">
+          <a class="nav-link" href="/delivery">Delivery</a>
+        </li>
+
         {{else}}
           <li class="nav-item">
+            <a href="/users/login" class="nav-link">My Account</a>
+          </li>
+
+        {{!-- <li class="nav-item">
             <a href="/users/login" class="nav-link">Login</a>
           </li>
+
           <li class="nav-item">
             <a href="/users/register" class="nav-link">Register</a>
-          </li>
+          </li> --}}
+
         {{/if}}
       </ul>
     </div>

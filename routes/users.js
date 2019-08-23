@@ -5,6 +5,7 @@ const passport = require('passport');
 const {ensureAuthenticated} = require('../helpers/auth');
 const router = express.Router();
 
+
 // Load User Model
 require('../models/User');
 const User = mongoose.model('users');
@@ -18,6 +19,18 @@ router.get('/login', (req, res) => {
 router.get('/register', (req, res) => {
   res.render('users/register');
 });
+
+// User Payment Route
+router.get('/payment', (req, res) => {
+  res.render('users/payment');
+});
+
+// User Payment POST
+router.post('/payment', (req, res, next) => {
+  req.flash('success_msg', 'Payment Successful');
+  res.redirect('/');
+});
+
 //User Update Route
 router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   User.findOne({
@@ -30,6 +43,18 @@ router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   });
 });
 
+// User Privilege get
+router.get('/privilege', (req, res) => {
+  res.render('users/privilege');
+});
+
+// User privilege POST
+router.post('/privilege', (req, res, next) => {
+  User.findOne({id: req.body.id})
+  .then(user => {
+    user.privilege = req.body.privilege;
+  });
+});
 
 //Update Profile
 router.get('/edit', ensureAuthenticated, (req, res) => {
@@ -53,14 +78,16 @@ router.post('/register', (req, res) => {
     errors.push({text:'Passwords do not match'});
   }
 
-  if(req.body.password.length < 4){
+  if(req.body.password.length < 4 ){
     errors.push({text:'Password must be at least 4 characters'});
   }
+  
 
   if(errors.length > 0){
     res.render('users/register', {
       errors: errors,
-      name: req.body.name,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
       email: req.body.email,
       password: req.body.password,
       password2: req.body.password2
@@ -73,11 +100,12 @@ router.post('/register', (req, res) => {
           res.redirect('/users/register');
         } else {
           const newUser = new User({
-            name: req.body.name,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
             email: req.body.email,
             password: req.body.password
           });
-          
+
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               if(err) throw err;
@@ -98,16 +126,17 @@ router.post('/register', (req, res) => {
   }
 });
 
-//Edit
+//Edit Profile
 router.put('/:id', ensureAuthenticated, (req, res) => {
   User.findOne({
     _id: req.params.id
   })
   .then(user => {
     // new values
-     user.name = req.body.name;
+    user.firstname = req.body.firstname,
+    user.lastname = req.body.lastname,
     user.email = req.body.email;
- 
+
     user.save()
       .then(user => {
         req.flash('success_msg', 'Profile updated');
@@ -116,7 +145,7 @@ router.put('/:id', ensureAuthenticated, (req, res) => {
   });
 });
 
-// Delete Idea
+// Delete Account
 router.delete('/:id', ensureAuthenticated, (req, res) => {
   User.remove({_id: req.params.id})
     .then(() => {

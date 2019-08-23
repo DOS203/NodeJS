@@ -1,7 +1,6 @@
 if(process.env.NODE_ENV == 'production'){
     module.exports = {mongoURI:
-        'mongodb://newdown2:newdown2@ds163517.mlab.com:63517/heroku_c4k6ns9h'}
-        
+        'mongodb://newdown:newdown1234@ds263927.mlab.com:63927/heroku_fw9f58vn'}
 
 }else{
     module.exports = {mongoURI: 'mongodb://localhost/LocalDev'}
